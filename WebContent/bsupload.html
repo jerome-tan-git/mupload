@@ -9,11 +9,12 @@
 		<link rel="stylesheet" type="text/css" href="./css/uploadify.css" />
 		
 		<script type="text/javascript" src="./js/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/jquery-ui-1.10.3.custom.min.js"></script>
 		<script type="text/javascript" src="./js/bootstrap.min.js"></script>
 		<script src="./js/ckeditor/ckeditor.js"></script>
 		<script src="./js/ckeditor/adapters/jquery.js"></script>
 		<script src="./js/backend.js"></script>
-		<script src="./js/jquery.uploadify.min.js"></script>
+		<script src="./js/jquery.uploadify.js"></script>
 		
 		<script>
 		var selectIndex = -1;
@@ -50,15 +51,22 @@
 		    ]
 		};
 		
-		
+		function deleteItem(instanceID, fileID)
+		{
+			//#DF6F6F
+			$('#'+fileID).animate({borderColor:"#cc0000",color:"#cc0000" }, 200);
+			
+			$('#'+instanceID).uploadify('cancel', fileID);
+		}
 		$(function() {
 		    $("#file_upload_1").uploadify({
 		    	removeCompleted : false,
+		    	buttonText : 'Browse...',
 		        height        : 30,
 		        swf           : './css/uploadify.swf',
 		        uploader      : './upload.servlet',
 		        width         : 120,
-		        itemTemplate : '<div id="${fileID}" class="uploadify-queue-item"><div class="cancel"><a href="javascript:$(\'#${instanceID}\').uploadify(\'cancel\', \'${fileID}\')">X</a></div><span class="fileName">${fileName} (${fileSize})</span><span class="data"></span><input type="hidder" class="realpath"></input></div>',
+		        itemTemplate : '<div id="${fileID}" class="uploadify-queue-item" style="border: 1px solid #ccc;"><div class="cancel"><a href="javascript:deleteItem(\'${instanceID}\', \'${fileID}\')">X</a></div><span class="fileName">${fileName} (${fileSize})</span><span class="data"></span><input type="hidden" class="realpath"></input></div>',
 		        'onUploadSuccess' : function(file, data, response) {
 			        //alert(file.id);
 		        	var obj = jQuery.parseJSON(data);
